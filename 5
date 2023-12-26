@@ -1,67 +1,37 @@
 @app.route(/login/', methods=['POST', 'GET'])
 
 def login():
+    if request.method == 'POST':
+        if request.form.get('login'):
+            username request.form.get('username')
+            password request.form.get('password')
+            if not bool(username) or not bool (password):
+                return render_template('account.html', error=2)
+            cursor.execute('SELECT * FROM service.users WHERE Login=%s AND password=%s', (str(username), str(password)))
+            records list(cursor.fetchall())
+            if len(records):
+                return render template('account.html', full name records[0][1])
+            else:
+                return render_template('account.html', error=1)
+        elif request.form.get('registration'):
+            return redirect('/registration/')
+    return render_template('login.html')
 
-if request.method == 'POST':
-
-if request.form.get('login'):
-
-username request.form.get('username')
-
-password request.form.get('password')
-
-if not bool(username) or not bool (password):
-
-return render_template('account.html', error=2)
-
-cursor.execute('SELECT FROM service.users WHERE Login=%s AND password=%s', (str(username), str(password)))
-
-records list(cursor.fetchall())
-
-if len(records):
-
-return render template('account.html', full name records[0][1])
-
-else:
-
-return render_template('account.html', error=1)
-
-elif request.form.get('registration'):
-
-return redirect('/registration/')
-
-return render_template('login.html')
-
-@app.route(/registration/, methods=['POST', 'GET'])
-
+@app.route('/registration/', methods=['POST', 'GET'])
 def registration():
-
-if request.nethod == 'POST':
-
-nane request.form.get('name')
-
-Login request.form.get('login')
-
-password request.forn.get('password')
-
-if not bool(name) or not bool (login) or not bool (password):
-
-return render_template('account.html', error 3)
-
-cursor.execute('SELECT FROM service.users WHERE Login=%s', (str(Login)))
-
-records list(cursor.fetchall())
-
-17. Len(records) == 01
-
-cursor.execute('INSERT INTO service.users (full name, login, password) VALUES (Ns, Na, Ns): (
-
-str(name), str(login), str(password)))
-
-conn.commit()
-
-return render template('account.htal, sera)
-
-return redirect(//login/')
-
-return render template(registration.ntal)
+    if request.method == 'POST':
+        nane request.form.get('name')
+        Login request.form.get('login')
+        password request.form.get('password')
+        if not bool(name) or not bool(login) or not bool(password):
+            return render_template('account.html', error 3)
+        cursor.execute('SELECT FROM service.users WHERE Login=%s', (str(Login)))
+        records list(cursor.fetchall())
+        if len(records) == 0:
+            cursor.execute('INSERT INTO service.users (full name, login, password) VALUES (Ns, Na, Ns):', (
+            str(name), str(login), str(password)))
+            conn.commit()
+        else:
+            return render_template('account.html', error=4)
+        return redirect('/login/')
+    return render_template('registration.html')
